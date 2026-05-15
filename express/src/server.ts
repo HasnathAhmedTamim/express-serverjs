@@ -81,7 +81,7 @@ app.get("/api/users", async (req: Request, res: Response) => {
         `);
     res.status(200).json({
       success: true,
-      message: "Users retrived successfully!",
+      message: "Users retrieved successfully!",
       data: result.rows,
     });
   } catch (error: any) {
@@ -113,7 +113,7 @@ app.get("/api/users/:id", async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: "User retrived successfully!",
+      message: "User retrieved successfully!",
       data: result.rows[0],
     });
   } catch (error: any) {
