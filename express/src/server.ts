@@ -3,20 +3,25 @@ import express, {
   type Request,
   type Response,
 } from "express";
+
+// Database Pool
 import { Pool } from "pg";
 import config from "./config";
 
 const app: Application = express();
 const port = config.port;
 
+// Middleware
 app.use(express.json());
 app.use(express.text());
 app.use(express.urlencoded({ extended: true }));
 
+// Database Connection
 const pool = new Pool({
   connectionString: config.connection_string,
 });
 
+// Initialize Database
 const initDB = async () => {
   try {
     await pool.query(`
@@ -39,6 +44,9 @@ const initDB = async () => {
 };
 initDB();
 
+// Routes
+
+// Home Route
 app.get("/", (req: Request, res: Response) => {
   //res.send("Hello World!");
   res.status(200).json({
@@ -47,6 +55,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+
+// Create User
 app.post("/api/users", async (req: Request, res: Response) => {
   //   console.log(req.body);
   const { name, email, password, age } = req.body;
@@ -74,6 +84,7 @@ app.post("/api/users", async (req: Request, res: Response) => {
   }
 });
 
+// Get All Users
 app.get("/api/users", async (req: Request, res: Response) => {
   try {
     const result = await pool.query(`
@@ -93,6 +104,7 @@ app.get("/api/users", async (req: Request, res: Response) => {
   }
 });
 
+// Get User by ID
 app.get("/api/users/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -124,6 +136,8 @@ app.get("/api/users/:id", async (req: Request, res: Response) => {
     });
   }
 });
+
+// Update User
 
 app.put("/api/users/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -169,6 +183,7 @@ app.put("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
+// Delete User
 app.delete("/api/users/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -201,6 +216,7 @@ app.delete("/api/users/:id", async (req: Request, res: Response) => {
   }
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
